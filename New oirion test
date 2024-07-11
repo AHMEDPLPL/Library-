@@ -671,10 +671,6 @@ local function MakeShowGui()
         Toggle.Visible = true
         Toggle.MouseButton1Click:Connect(function()
             MainWindow.Visible = true -- Adjust this as per your MainWindow reference
-                wait(0.1)
-                if ScreenGui then
-                ScreenGui:Destroy()
-            ScreenGui = nil
         end)
     end
     ScreenGui.Visible = true

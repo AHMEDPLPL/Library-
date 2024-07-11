@@ -1759,6 +1759,10 @@ function OrionLib:MakeWindow(WindowConfig)
 	return TabFunction
 end   
 
+function OrionLib:Destroy()
+	Orion:Destroy()
+end
+
 local ScreenGui = nil
 
 local function MakeNewGui()
@@ -1791,11 +1795,5 @@ local function MakeNewGui()
 end
 
 MakeNewGui()
-
-function OrionLib:Destroy()
-	Orion:Destroy()
-end
-
-
 
 return OrionLib

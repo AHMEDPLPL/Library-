@@ -1764,6 +1764,7 @@ function OrionLib:Destroy()
 end
 
 local ScreenGui = nil
+local isScriptOne = true  -- Variable to track which script should run
 
 local function MakeNewGui()
     ScreenGui = Instance.new("ScreenGui")
@@ -1784,13 +1785,18 @@ local function MakeNewGui()
     Toggle.Draggable = true
     Toggle.Visible = true
 
-    -- Toggle the visibility of MainWindow
+    -- Toggle between two scripts
     Toggle.MouseButton1Click:Connect(function()
-        if MainWindow.Visible then
-            MainWindow.Visible = false
+        if isScriptOne then
+            -- First script
+            print("Running first script")
+            -- Your first script logic here
         else
-            MainWindow.Visible = true
+            -- Second script
+            print("Running second script")
+            -- Your second script logic here
         end
+        isScriptOne = not isScriptOne  -- Toggle the state
     end)
 end
 

@@ -653,7 +653,8 @@ function OrionLib:MakeWindow(WindowConfig)
 		WindowConfig.CloseCallback()
 	end)
 
-	AddConnection(UserInputService.InputBegan, function(Input)
+	AddConnection(UserInputService.InputBegan, function()
+if UIHidden then
 		local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "ScreenGui"
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
@@ -672,12 +673,11 @@ Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
 Toggle.TextSize = 20 
 Toggle.Draggable = true
 Toggle.Visible = true
-Toggle.MouseButton1Click:Connect(function()
-    if UIHidden then
+Toggle.MouseButton1Click:Connect(function() 
 			MainWindow.Visible = true
-end
 end)
-	end)
+end)
+end
 
 	AddConnection(MinimizeBtn.MouseButton1Up, function()
 		if Minimized then

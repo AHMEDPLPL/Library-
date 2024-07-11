@@ -59,8 +59,6 @@ Toggle.Draggable = true
 Toggle.Visible = true
 Toggle.MouseButton1Click:Connect(function()
     MainWindow.Visible = true
-wait(0.1)
-ScreenGui:Destroy()
 end)
 end
 

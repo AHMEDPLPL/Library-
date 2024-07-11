@@ -1759,8 +1759,43 @@ function OrionLib:MakeWindow(WindowConfig)
 	return TabFunction
 end   
 
+local ScreenGui = nil
+
+local function MakeNewGui()
+    ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Name = "ScreenGui"
+    ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    ScreenGui.ResetOnSpawn = false
+
+    local Toggle = Instance.new("TextButton")
+    Toggle.Name = "Toggle"
+    Toggle.Parent = ScreenGui
+    Toggle.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Toggle.Position = UDim2.new(0, 0, 0.454706937, 0)
+    Toggle.Size = UDim2.new(0, 120, 0, 40)
+    Toggle.Font = Enum.Font.GothamBold
+    Toggle.Text = "Show/Hide"
+    Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Toggle.TextSize = 20
+    Toggle.Draggable = true
+    Toggle.Visible = true
+
+    -- Toggle the visibility of MainWindow
+    Toggle.MouseButton1Click:Connect(function()
+        if MainWindow.Visible then
+            MainWindow.Visible = false
+        else
+            MainWindow.Visible = true
+        end
+    end)
+end
+
+MakeNewGui()
+
 function OrionLib:Destroy()
 	Orion:Destroy()
 end
+
+
 
 return OrionLib

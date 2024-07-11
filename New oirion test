@@ -655,9 +655,6 @@ end)
 
 AddConnection(UserInputService.InputBegan, function(input)
 	if UIHidden then
-		if game.Players.LocalPlayer:FindFirstChild("PlayerGui"):FindFirstChild("system hub v3 library") then
-			return
-		end
 		
 		-- Only create ScreenGui if "system hub v3 library" doesn't exist in PlayerGui
 		local ScreenGui = Instance.new("ScreenGui")

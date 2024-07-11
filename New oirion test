@@ -648,39 +648,21 @@ function OrionLib:MakeWindow(WindowConfig)
 	MakeDraggable(DragPoint, MainWindow)
 
 	AddConnection(CloseBtn.MouseButton1Up, function()
-	MainWindow.Visible = false
-	UIHidden = true
-	WindowConfig.CloseCallback()
-end)
+		MainWindow.Visible = false
+		UIHidden = true
+		OrionLib:MakeNotification({
+			Name = "Interface Hidden",
+			Content = "Tap RightShift to reopen the interface",
+			Time = 5
+		})
+		WindowConfig.CloseCallback()
+	end)
 
-AddConnection(UserInputService.InputBegan, function(input)
-	if UIHidden then
-		
-		-- Only create ScreenGui if "system hub v3 library" doesn't exist in PlayerGui
-		local ScreenGui = Instance.new("ScreenGui")
-		ScreenGui.Name = "ScreenGui"
-		ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-		ScreenGui.ResetOnSpawn = false
-		
-		local Toggle = Instance.new("TextButton")
-		Toggle.Name = "system hub v3 library"
-		Toggle.Parent = ScreenGui
-		Toggle.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-		Toggle.Position = UDim2.new(0, 0, 0.454706937, 0)
-		Toggle.Size = UDim2.new(0, 120, 0, 40)
-		Toggle.Font = Enum.Font.GothamBold
-		Toggle.Text = "Show/Hide"
-		Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
-		Toggle.TextSize = 20
-		Toggle.Draggable = true
-		Toggle.Visible = true
-		
-		Toggle.MouseButton1Click:Connect(function() 
+	AddConnection(UserInputService.InputBegan, function(Input)
+		if Input.KeyCode == Enum.KeyCode.RightShift and UIHidden then
 			MainWindow.Visible = true
-			ScreenGui:Destroy()
-		end)
-	end
-end)
+		end
+	end)
 
 	AddConnection(MinimizeBtn.MouseButton1Up, function()
 		if Minimized then

@@ -675,7 +675,6 @@ local function MakeShowGui()
           end
         end)
     end
-    ScreenGui.Visible = true
 end
 
 	AddConnection(CloseBtn.MouseButton1Up, function()

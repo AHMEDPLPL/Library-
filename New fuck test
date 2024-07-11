@@ -655,6 +655,11 @@ function OrionLib:MakeWindow(WindowConfig)
 
 	AddConnection(UserInputService.InputBegan, function()
 if UIHidden then
+if game.Players.LocalPlayer:FindFirstChild("PlayerGui"):FindFirstChild("system hub v3 library") then
+    
+    return
+end
+if UIHidden then
 		local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "ScreenGui"
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
@@ -662,7 +667,7 @@ ScreenGui.ResetOnSpawn = false
 
 
 local Toggle = Instance.new("TextButton")
-Toggle.Name = "Toggle"
+Toggle.Name = "system hub v3 library"
 Toggle.Parent = ScreenGui
 Toggle.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 Toggle.Position = UDim2.new(0, 0, 0.454706937, 0) 
@@ -675,6 +680,8 @@ Toggle.Draggable = true
 Toggle.Visible = true
 Toggle.MouseButton1Click:Connect(function() 
 			MainWindow.Visible = true
+ScreenGui:Destroy()
+
 end)
 end)
 end

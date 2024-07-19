@@ -1764,10 +1764,10 @@ function OrionLib:Destroy()
 end
 
 function OrionLib:ToggleUI()
-    if game.CoreGui[Orion].Enabled then
-        game.CoreGui[Orion].Enabled = false
+    if game.CoreGui[Orion.Parent].Enabled then
+        game.CoreGui[Orion.Parent].Enabled = false
     else
-        game.CoreGui[Orion].Enabled = true
+        game.CoreGui[Orion.Parent].Enabled = true
     end
 end
 

@@ -1763,8 +1763,4 @@ function OrionLib:Destroy()
 	Orion:Destroy()
 end
 
-function OrionLib:ToggleUI()
-    Orion:Destroy()
-end
-
 return OrionLib

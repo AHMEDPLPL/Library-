@@ -1763,4 +1763,14 @@ function OrionLib:Destroy()
 	Orion:Destroy()
 end
 
+function OrionLib:ToggleUI()
+    MainWindow.Visible = false
+		UIHidden = true
+		WindowConfig.CloseCallback()
+else
+if UIHidden then
+MainWindow.Visible = true
+end
+end
+
 return OrionLib

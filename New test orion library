@@ -1765,7 +1765,7 @@ end
 
 function OrionLib:ToggleUI()
     if game.CoreGui[Orion].Enabled then
-        game.CoreGui[LibName].Enabled = false
+        game.CoreGui[Orion].Enabled = false
     else
         game.CoreGui[Orion].Enabled = true
     end

@@ -676,6 +676,8 @@ local function MakeShowGui()
     end
 end
 
+MakeShowGui()
+
 -- Call the function to create and show the GUI
 
 AddConnection(CloseBtn.MouseButton1Up, function()
@@ -686,7 +688,7 @@ AddConnection(CloseBtn.MouseButton1Up, function()
 
 	AddConnection(InputBegan, function()
 		if UIHidden then
-        MakeShowGui()
+        
         UIHidden = false
     end
 	end)

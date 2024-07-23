@@ -655,7 +655,7 @@ local function MakeShowGui()
     if not ScreenGui then
         -- Create ScreenGui instance
         ScreenGui = Instance.new("ScreenGui")
-        ScreenGui.Name = "ScreenGui"
+        ScreenGui.Name = "ScreenGUIlibrary"
         ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
         ScreenGui.ResetOnSpawn = false
 
@@ -672,50 +672,34 @@ local function MakeShowGui()
         Toggle.TextSize = 20
         Toggle.Draggable = true
         Toggle.Visible = true
-        
+
         -- Connect Toggle button click event
         Toggle.MouseButton1Click:Connect(function()
+            -- Assuming MainWindow is defined elsewhere and is a reference to another GUI element
             MainWindow.Visible = true -- Adjust this as per your MainWindow reference
+
+            -- Correctly destroy the ScreenGui when the button is clicked
+            if ScreenGui then
+                ScreenGui:Destroy()
+                ScreenGui = nil -- Clear the reference to the ScreenGui
+            end
         end)
     end
     ScreenGui.Visible = true
 end
 
--- Function to handle screen click and delete ScreenGui
-local function DeleteOnClick()
-    if ScreenGui then
-        -- Connect input began event to the screen
-        game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessedEvent)
-            -- Check if the input is a mouse click and not on UI
-            if input.UserInputType == Enum.UserInputType.MouseButton1 and not gameProcessedEvent then
-                -- Destroy the ScreenGui
-                ScreenGui:Destroy()
-                ScreenGui = nil
-
-                -- Optional: Disconnect the script if needed
-                script:Destroy()
-            end
-        end)
-    end
-end
-
--- Example usage: Make the GUI and prepare for deletion
-MakeShowGui()
-DeleteOnClick()
-
--- AddConnection function example (make sure to define AddConnection properly)
 AddConnection(CloseBtn.MouseButton1Up, function()
-    MainWindow.Visible = false
-    UIHidden = true
-    WindowConfig.CloseCallback()
-end)
+		MainWindow.Visible = false
+		UIHidden = true
+		WindowConfig.CloseCallback()
+	end)
 
-AddConnection(UserInputService.InputBegan, function(Input)
-    if UIHidden then
+	AddConnection(UserInputService.InputBegan, function(Input)
+		if UIHidden then
         MakeShowGui()
         UIHidden = false
     end
-end)
+	end)
 
 	AddConnection(MinimizeBtn.MouseButton1Up, function()
 		if Minimized then

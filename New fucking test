@@ -669,7 +669,10 @@ local function MakeShowGui()
         Toggle.Draggable = true
         Toggle.Visible = true
         Toggle.MouseButton1Click:Connect(function()
-            MainWindow.Visible = true -- Adjust this as per your MainWindow reference
+            MainWindow.Visible = true 
+ if ScreenGui then
+                ScreenGui:Destroy()
+            end
         end)
     end
     ScreenGui.Visible = true

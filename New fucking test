@@ -684,7 +684,7 @@ AddConnection(CloseBtn.MouseButton1Up, function()
 		WindowConfig.CloseCallback()
 	end)
 
-	AddConnection(UserInputService.InputBegan, function(Input)
+	AddConnection(InputBegan, function()
 		if UIHidden then
         MakeShowGui()
         UIHidden = false

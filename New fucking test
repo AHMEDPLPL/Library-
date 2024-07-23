@@ -668,14 +668,15 @@ local function MakeShowGui()
         Toggle.TextSize = 20
         Toggle.Draggable = true
         Toggle.Visible = true
+        
+       
         Toggle.MouseButton1Click:Connect(function()
-            MainWindow.Visible = true 
- if ScreenGui then
-                ScreenGui:Destroy()
-            end
+            MainWindow.Visible = not MainWindow.Visible  -- Toggle visibility
         end)
     end
 end
+
+-- Call the function to create and show the GUI
 
 AddConnection(CloseBtn.MouseButton1Up, function()
 		MainWindow.Visible = false

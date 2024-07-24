@@ -1,5 +1,3 @@
-
-
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
@@ -55,13 +53,27 @@ else
 	Orion.Parent = gethui() or game.CoreGui
 end
 
+if gethui then
+	for _, Interface in ipairs(gethui():GetChildren()) do
+		if Interface.Name == Orion.Name and Interface ~= Orion then
+			Interface:Destroy()
+		end
+	end
+else
+	for _, Interface in ipairs(game.CoreGui:GetChildren()) do
+		if Interface.Name == Orion.Name and Interface ~= Orion then
+			Interface:Destroy()
+		end
+	end
+end
+
 
 
 local function MakeDraggable(DragPoint, Main)
 	pcall(function()
 		local Dragging, DragInput, MousePos, FramePos = false
 		AddConnection(DragPoint.InputBegan, function(Input)
-			if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+			if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
 				Dragging = true
 				MousePos = Input.Position
 				FramePos = Main.Position
@@ -74,14 +86,14 @@ local function MakeDraggable(DragPoint, Main)
 			end
 		end)
 		AddConnection(DragPoint.InputChanged, function(Input)
-			if Input.UserInputType == Enum.UserInputType.MouseMovement then
+			if Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch then
 				DragInput = Input
 			end
 		end)
 		AddConnection(UserInputService.InputChanged, function(Input)
 			if Input == DragInput and Dragging then
 				local Delta = Input.Position - MousePos
-				--TweenService:Create(Main, TweenInfo.new(0.05, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position  = UDim2.new(FramePos.X.Scale,FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)}):Play()
+				TweenService:Create(Main, TweenInfo.new(0.05, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position  = UDim2.new(FramePos.X.Scale,FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)}):Play()
 				Main.Position  = UDim2.new(FramePos.X.Scale,FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)
 			end
 		end)
@@ -204,7 +216,7 @@ local function SaveCfg(Name)
 	writefile(OrionLib.Folder .. "/" .. Name .. ".txt", tostring(HttpService:JSONEncode(Data)))
 end
 
-local WhitelistedMouse = {Enum.UserInputType.MouseButton1, Enum.UserInputType.MouseButton2,Enum.UserInputType.MouseButton3}
+local WhitelistedMouse = {Enum.UserInputType.MouseButton1, Enum.UserInputType.MouseButton2,Enum.UserInputType.MouseButton3,Enum.UserInputType.Touch}
 local BlacklistedKeys = {Enum.KeyCode.Unknown,Enum.KeyCode.W,Enum.KeyCode.A,Enum.KeyCode.S,Enum.KeyCode.D,Enum.KeyCode.Up,Enum.KeyCode.Left,Enum.KeyCode.Down,Enum.KeyCode.Right,Enum.KeyCode.Slash,Enum.KeyCode.Tab,Enum.KeyCode.Backspace,Enum.KeyCode.Escape}
 
 local function CheckKey(Table, Key)
@@ -326,7 +338,7 @@ CreateElement("Label", function(Text, TextSize, Transparency)
 		TextColor3 = Color3.fromRGB(240, 240, 240),
 		TextTransparency = Transparency or 0,
 		TextSize = TextSize or 15,
-		Font = Enum.Font.Gotham,
+		Font = Enum.Font.Roboto,
 		RichText = true,
 		BackgroundTransparency = 1,
 		TextXAlignment = Enum.TextXAlignment.Left
@@ -607,48 +619,21 @@ function OrionLib:MakeWindow(WindowConfig)
 
 	MakeDraggable(DragPoint, MainWindow)
 
-local ScreenGui = nil
-
-local function MakeShowGui()
-    if not ScreenGui then
-        ScreenGui = Instance.new("ScreenGui")
-        ScreenGui.Name = "ScreenGui"
-        ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-        ScreenGui.ResetOnSpawn = false
-
-        local Toggle = Instance.new("TextButton")
-        Toggle.Name = "Toggle"
-        Toggle.Parent = ScreenGui
-        Toggle.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        Toggle.Position = UDim2.new(0, 0, 0.454706937, 0)
-        Toggle.Size = UDim2.new(0, 120, 0, 40)
-        Toggle.Font = Enum.Font.GothamBold
-        Toggle.Text = "Show/Hide"
-        Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Toggle.TextSize = 20
-        Toggle.Draggable = true
-        Toggle.Visible = true
-        
-       
-        Toggle.MouseButton1Click:Connect(function()
-            MainWindow.Visible = not MainWindow.Visible  -- Toggle visibility
-        end)
-    end
-end
-
--- Call the function to create and show the GUI
-
-AddConnection(CloseBtn.MouseButton1Up, function()
+	AddConnection(CloseBtn.MouseButton1Up, function()
 		MainWindow.Visible = false
 		UIHidden = true
+		OrionLib:MakeNotification({
+			Name = "Interface Hidden",
+			Content = "Tap RightShift to reopen the interface",
+			Time = 5
+		})
 		WindowConfig.CloseCallback()
 	end)
 
 	AddConnection(UserInputService.InputBegan, function(Input)
-		if UIHidden then
-        MakeShowGui()
-        UIHidden = false
-    end
+		if Input.KeyCode == Enum.KeyCode.RightShift and UIHidden then
+			MainWindow.Visible = true
+		end
 	end)
 
 	AddConnection(MinimizeBtn.MouseButton1Up, function()
@@ -1042,19 +1027,19 @@ AddConnection(CloseBtn.MouseButton1Up, function()
 				}), "Second")
 
 				SliderBar.InputBegan:Connect(function(Input)
-					if Input.UserInputType == Enum.UserInputType.MouseButton1 then 
+					if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then 
 						Dragging = true 
 					end 
 				end)
 				SliderBar.InputEnded:Connect(function(Input) 
-					if Input.UserInputType == Enum.UserInputType.MouseButton1 then 
+					if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then 
 						Dragging = false 
 					end 
 				end)
 
 				UserInputService.InputChanged:Connect(function(Input)
-					if Dragging and Input.UserInputType == Enum.UserInputType.MouseMovement then 
-						local SizeScale = math.clamp((Input.Position.X - SliderBar.AbsolutePosition.X) / SliderBar.AbsoluteSize.X, 0, 1)
+					if Dragging then 
+						local SizeScale = math.clamp((Mouse.X - SliderBar.AbsolutePosition.X) / SliderBar.AbsoluteSize.X, 0, 1)
 						Slider:Set(SliderConfig.Min + ((SliderConfig.Max - SliderConfig.Min) * SizeScale)) 
 						SaveCfg(game.GameId)
 					end
@@ -1279,7 +1264,7 @@ AddConnection(CloseBtn.MouseButton1Up, function()
 				end)
 
 				AddConnection(Click.InputEnded, function(Input)
-					if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+					if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
 						if Bind.Binding then return end
 						Bind.Binding = true
 						BindBox.Value.Text = ""
@@ -1555,7 +1540,7 @@ AddConnection(CloseBtn.MouseButton1Up, function()
 				ColorV = 1 - (math.clamp(ColorSelection.AbsolutePosition.Y - Color.AbsolutePosition.Y, 0, Color.AbsoluteSize.Y) / Color.AbsoluteSize.Y)
 
 				AddConnection(Color.InputBegan, function(input)
-					if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 						if ColorInput then
 							ColorInput:Disconnect()
 						end
@@ -1571,7 +1556,7 @@ AddConnection(CloseBtn.MouseButton1Up, function()
 				end)
 
 				AddConnection(Color.InputEnded, function(input)
-					if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 						if ColorInput then
 							ColorInput:Disconnect()
 						end
@@ -1579,7 +1564,7 @@ AddConnection(CloseBtn.MouseButton1Up, function()
 				end)
 
 				AddConnection(Hue.InputBegan, function(input)
-					if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 						if HueInput then
 							HueInput:Disconnect()
 						end;
@@ -1596,7 +1581,7 @@ AddConnection(CloseBtn.MouseButton1Up, function()
 				end)
 
 				AddConnection(Hue.InputEnded, function(input)
-					if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 						if HueInput then
 							HueInput:Disconnect()
 						end
@@ -1740,8 +1725,6 @@ AddConnection(CloseBtn.MouseButton1Up, function()
 	--		writefile("NewLibraryNotification1.txt","The value for the notification having been sent to you.")
 	--	end
 	--end
-	
-
 	
 	return TabFunction
 end   

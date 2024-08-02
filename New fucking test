@@ -738,6 +738,8 @@ local function MakeShowGui()
         Stroke1.Color = Color3.fromRGB(255, 255, 255) -- White border
         Stroke1.Thickness = 2
 
+local Title = game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("ScreenGui"):FindFirstChild("Title")
+
         -- Assuming MainWindow and Title are previously defined somewhere
         -- If they're not, replace them with actual instances
         Toggle.MouseButton1Click:Connect(function()

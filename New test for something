@@ -755,7 +755,7 @@ if gethui then
 	for _, Interface in ipairs(gethui():GetChildren()) do
 		if Interface.Name == Orion.Name and Interface ~= Orion then
 			if Title then
-                           Tilte:Destroy()
+                           Titlee:Destroy()
             end
                       if Toggle then
                     Toggle:Destroy()
@@ -766,7 +766,7 @@ else
 for _, Interface in ipairs(game.CoreGui:GetChildren()) do
 		if Interface.Name == Orion.Name and Interface ~= Orion then
 			if Title then
-                           Tilte:Destroy()
+                           Title:Destroy()
             end
                       if Toggle then
                     Toggle:Destroy()
